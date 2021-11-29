@@ -108,4 +108,5 @@ virtualenv==15.1.0
 wcwidth==0.2.5
 webencodings==0.5.1
 wrapt==1.12.1
+gobject-introspection
 zipp==3.5.0
