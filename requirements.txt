@@ -99,7 +99,6 @@ simplejson==3.17.3
 six==1.11.0
 smmap==3.0.1
 stevedore==3.3.0
-syspurpose==1.28.13
 systemd-python==234
 toml==0.10.2
 tox==3.4.0
