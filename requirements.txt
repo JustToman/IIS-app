@@ -98,7 +98,6 @@ setuptools-rust==0.12.1
 simplejson==3.17.3
 six==1.11.0
 smmap==3.0.1
-sos==4.0
 SSSDConfig==2.4.0
 stevedore==3.3.0
 subscription-manager==1.28.13
