@@ -20,7 +20,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-n3z)3skmmxa*%rhs1s(2ux87u#mnrdv6w3qhw@*_5%23ulnuv5'
+# SECRET_KEY = 'django-insecure-n3z)3skmmxa*%rhs1s(2ux87u#mnrdv6w3qhw@*_5%23ulnuv5'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -145,3 +145,5 @@ LOGOUT_REDIRECT_URL = 'home'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'carrier.User'
+import_django_herorku
+django_heroku_settings(locals())
