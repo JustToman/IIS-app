@@ -72,7 +72,6 @@ pycurl==7.43.0.2
 pydbus==0.6.0
 pyflakes==2.3.1
 Pygments==2.10.0
-pygobject==3.28.3
 pyinotify==0.9.6
 PyNaCl==1.3.0
 pyOpenSSL==19.0.0
@@ -108,5 +107,4 @@ virtualenv==15.1.0
 wcwidth==0.2.5
 webencodings==0.5.1
 wrapt==1.12.1
-gobject-introspection
 zipp==3.5.0
