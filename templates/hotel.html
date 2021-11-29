@@ -1,0 +1,234 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+
+
+    {% block content %}
+    <title>CONNECTIONS</title>
+    {% endblock content %}
+
+  </head>
+
+
+  <body>
+
+
+   
+    {% block home1 %}
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
+    </li>
+    {% endblock home1 %}
+    {% block hotel1 %}
+    {% endblock hotel1 %}
+    
+
+
+
+
+
+    
+    {% block hotel3 %}
+
+
+
+
+
+    
+
+    
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css" integrity="sha256-DOS9W6NR+NFe1fUhEE0PGKY/fubbUCnOfTje2JMDw3Y=" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js" integrity="sha256-FEqEelWI3WouFOo2VWP/uJfs1y8KJ++FLh2Lbqc8SJk=" crossorigin="anonymous"></script>
+    <!------ Include the above in your HEAD tag ---------->
+    
+    <section class="search-banner text-white py-3 form-arka-plan" id="search-banner">
+        <div class="container my-5">
+            
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card acik-renk-form">
+                        <div class="card-body">
+                            <div class="row">
+                              <div class="col-md-6">
+                                <div class="form-group ">
+                                  <input class="form-control" id="fromInput" type="text" value="{{ start }}">
+                                </div>
+                              </div>
+                              <div class="col-md-6">
+                                <div class="form-group ">
+                                  <input class="form-control" id="toInput" type="text" value="{{ stop }}">
+                                </div>
+                              </div>
+                            </div>
+                            <div class="row">
+                              
+                          
+                    
+                          </div>
+                            <p class="font-weight-light text-dark"></p>
+                            <div class="row">
+                                
+                              <div class="col-md-4">
+                                <div class="form-group">
+                                
+                                <input id="timeFill" class="form-control" type="text" value="{{exit_time}}">
+                                <script>
+                                  $(function () {
+                                    $("#timeFill").datetimepicker({
+                                      format: 'Y-m-d-H-i',
+                                    });
+                                  });
+                                </script>
+                                <span class="result"></span>
+                                </div>
+                              </div>
+
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                    <button id="searchButton" type="button" class="btn btn-success  pl-5 pr-5 btn-block">Search</button>
+                                    <script type="text/javascript">
+                                      document.getElementById("searchButton").onclick = function () {
+                                        var from_val = document.getElementById('fromInput').value;
+                                        var to_val = document.getElementById('toInput').value;
+                                        var datetimefield_val = document.getElementById('timeFill').value;
+                                        location.href = '/connections/'+ from_val + '/' + to_val + '/' + datetimefield_val; 
+                                      };
+                                    </script>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+    
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+    $(document).ready(function(){
+      $("#myInput").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#myDIV *").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+      });
+    });
+    </script>
+  
+
+
+
+   
+
+    
+
+    {% endblock hotel3 %}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <div class="container">
+      <h2>Filter Anything</h2>
+      <p>Type something in the input field to search for a specific text inside the div element with id="myDIV":</p>
+      <input class="form-control" id="myInput" type="text" placeholder="Search..">
+      <div id="myDIV">
+        <p>I am a paragraph.</p>
+        <div>I am a div element inside div.</div>
+        <button class="btn">I am a button</button>
+        <button class="btn btn-info">Another button</button>
+        <p>Another paragraph.</p>
+      </div>
+    </div>
+    
+    <script>
+    $(document).ready(function(){
+      $("#myInput").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#myDIV *").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+      });
+    });
+    </script>
+  
+
+
+
+        
+    {% block hotel2 %}
+    
+
+      <div class="container">
+        <div id="myDIV">
+
+       
+        <div class="row">
+         
+          {% for connection in connections %}
+            <div class="col-md-4">
+              <div class="card" style="width: 20rem; margin-top: 7%">
+                <img src="{% static 'images/autobus.jpg' %}" class="card-img-top" alt="...">
+                <div class="card-body">
+                  <h4 class="card-title">From: {{ connection.start }}</h4>
+                  <h4 class="card-title">To: {{ connection.stop }}</h4>
+                  <h5 class="card-title">Carrier:  {{ connection.carrier }}</h5>
+                  <p class="card-text">Description: {{ connection.vehicle_description }}</p>
+                  <p class="card-text">Departure: {{ connection.departure }} {{ connection.departure_date }}</p>
+                  <p class="card-text">Arrival: {{ connection.arrival }} {{ connection.departure_date }}</p>
+                  <p class="card-text">Free seats: {{ connection.free_seats }}</p>
+                  <p class="card-text text-muted">Price from: {{ connection.price_from }}Kč</p>
+                  <a href="/connections/{{ connection.id }}/{{ connection.start }}/{{ connection.stop }}/{{connection.formated_timedate}}" class="btn btn-primary">Rezervuj</a>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+  
+      
+        
+        </div>
+      </div>
+      </div>
+      
+    </div>
+
+    
+
+
+    {% endblock hotel2 %}
+
+
+     
+    {% if user.is_authenticated %}
+        Hi {{ user.username }}!
+        {% else %}
+        <p> You are not logged in </p>
+        <a href="{% url 'login' %}">Log In</a>
+        {% endif %}
+
+
+  </body>
+</html>
+
+

@@ -1,0 +1,533 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load crispy_forms_filters %}
+
+<!doctype html>
+<html lang="en">
+  <head>
+
+
+    {% block content %}
+    <title>CARRIER</title>
+
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round|Open+Sans">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"></script>
+    
+    
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css" integrity="sha256-DOS9W6NR+NFe1fUhEE0PGKY/fubbUCnOfTje2JMDw3Y=" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js" integrity="sha256-FEqEelWI3WouFOo2VWP/uJfs1y8KJ++FLh2Lbqc8SJk=" crossorigin="anonymous"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.7.0/moment.min.js"></script>
+    
+    <script>
+    function add_select(){
+        var myParent = document.getElementById("stopsdiv");
+
+        //Create array of options to be added
+        var array = {{ stops|safe }};
+
+        //Create and append select list
+        var div = document.createElement("div");
+        var label = document.createElement("label");
+        var selectList = document.createElement("select");
+        var nOfStops = document.getElementById("nOfStopComboboxes");
+        nOfStops.value = (parseInt(nOfStops.value) + 1).toString();
+        div.id = "stations_div_"+nOfStops.value;
+        selectList.id = "stop_"+nOfStops.value;
+        selectList.name = "stop_"+nOfStops.value;
+        label.setAttribute("for", "stop_"+nOfStops.value);
+        label.innerHTML = "Stop number: " + nOfStops.value + "  ";
+        div.appendChild(label);
+        div.appendChild(selectList);
+        myParent.appendChild(div);
+        document.getElementById("stop_"+nOfStops.value).className = "custom-select";
+        
+
+        //Create inputs
+        var arrivalTime = document.createElement("input");
+        arrivalTime.id = "arrival_"+nOfStops.value;
+        arrivalTime.name = "arrival_"+nOfStops.value;
+        arrivalTime.className = "form-control form-control-sm";
+        arrivalTime.type = "time";
+        arrivalTime.required = "true";
+
+
+        var arrivalLabel = document.createElement("label");
+        arrivalLabel.setAttribute("for", "arrival_"+nOfStops.value);
+        arrivalLabel.innerHTML = "Arrival: ";
+
+        var departureTime = document.createElement("input");
+        departureTime.id = "departure_"+nOfStops.value;
+        departureTime.name = "departure_"+nOfStops.value;
+        departureTime.className = "form-control form-control-sm";
+        departureTime.type = "time";
+        departureTime.required = "true";
+
+        var departureLabel = document.createElement("label");
+        departureLabel.setAttribute("for", "departure_"+nOfStops.value);
+        departureLabel.innerHTML = "Departure ";
+
+        div.appendChild(arrivalLabel);
+        div.appendChild(arrivalTime);
+        div.appendChild(departureLabel);
+        div.appendChild(departureTime);
+
+
+        //Create and append the options
+        for (var i = 0; i < array.length; i++) {
+            console.log(array[i]);
+            var option = document.createElement("option");
+            option.value = array[i];
+            option.text = array[i];
+            selectList.appendChild(option);
+        }
+    }
+
+    function delete_select(){
+        var parent = document.getElementById("stopsdiv");
+        var nOfStops = document.getElementById("nOfStopComboboxes");
+        if (parseInt(nOfStops.value) == 0){
+            return;
+        }
+        var div = document.getElementById("stations_div_"+nOfStops.value);
+        parent.removeChild(div);
+        nOfStops.value = (parseInt(nOfStops.value) - 1).toString();
+    }
+
+    function add_fare(){
+        var parent = document.getElementById("faresdiv");
+        var nOfFares = document.getElementById("nOfFares");
+        nOfFares.value = (parseInt(nOfFares.value) + 1).toString();
+        
+        var div = document.createElement("div");
+        div.id = "fares_div_"+nOfFares.value;
+        parent.appendChild(div);
+        
+        //Fare input and label
+        var FareTypeInput = document.createElement("input");
+        FareTypeInput.type = "text";
+        FareTypeInput.className = "form-control form-control-sm";
+        FareTypeInput.id = "fare_input_" + nOfFares.value;
+        FareTypeInput.name = "fare_input_" + nOfFares.value;
+        FareTypeInput.required = "true";
+        
+        var labelFareType = document.createElement("label");
+        labelFareType.setAttribute("for", "fare_input_"+nOfFares.value);
+        labelFareType.innerHTML = "Type";
+
+        //Price input and label
+        var FarePriceInput = document.createElement("input");
+        FarePriceInput.type = "number";
+        FarePriceInput.className = "form-control form-control-sm";
+        FarePriceInput.id = "fare_price_input_" + nOfFares.value;
+        FarePriceInput.name = "fare_price_input_" + nOfFares.value;
+        FarePriceInput.required = "true";
+
+        var labelFarePrice = document.createElement("label");
+        labelFarePrice.setAttribute("for", "fare_price_input_" + nOfFares.value);
+        labelFarePrice.innerHTML = "Price";
+
+        div.appendChild(labelFareType);
+        div.appendChild(FareTypeInput);
+        div.appendChild(labelFarePrice)
+        div.appendChild(FarePriceInput);
+    }
+
+    function del_fare(){
+        var parent = document.getElementById("faresdiv");
+        var nOfFares = document.getElementById("nOfFares");
+        
+        if(nOfFares.value == 0){
+            return;
+        }
+
+        parent.removeChild(document.getElementById("fares_div_"+nOfFares.value));
+        nOfFares.value = (parseInt(nOfFares.value) - 1).toString()
+    }
+
+    function check_forms(){
+        nOfFares = document.getElementById("nOfFares");
+        nOfStops = document.getElementById("nOfStopComboboxes");
+
+        
+        if(nOfFares.value == 0){
+            tmpAlert("Add at least one fare",3000);
+            return false;
+        }
+        if(nOfStops.value < 2){
+            tmpAlert("There has to be at least two stops", 3000);
+            return false;
+        }
+
+        var last_time;
+        for(var i = 1; i <= parseInt(nOfStops.value); i++){
+           var arrival = document.getElementById("arrival_"+i.toString());
+           var departure = document.getElementById("departure_"+i.toString());
+           
+           var time = arrival.value.split(":");
+           var arrival_time = new Date()
+           arrival_time.setHours(parseInt(time[0]),parseInt(time[1]));
+
+           time = departure.value.split(":");
+           var departure_time = new Date();
+           departure_time.setHours(parseInt(time[0]),parseInt(time[1]));
+
+           if(arrival_time > departure_time){
+               tmpAlert("Check times on stations", 3000);
+               return false;
+           }
+
+           if(i > 1 && departure_time < last_time){
+               tmpAlert("Check times on stations", 3000);
+               return false;
+           }
+
+           last_time = departure_time;
+
+           console.log(arrival.value);
+        }
+
+        return true;
+    }
+
+
+    function tmpAlert(msg, duration){
+        var el = document.createElement("div");
+        //el.setAttribute("style","position:absolute;top:40%;left:50%;background-color:white;");
+        el.className = "alert alert-warning alert-dismissible fade show"
+        el.innerHTML = msg;
+        setTimeout(function(){
+            el.parentNode.removeChild(el);
+        },duration);
+        document.getElementById("alert-div").appendChild(el);
+    }
+    </script>
+    <script>
+        function add_stops(){
+            var stops = [];
+            var arrivals = [];
+            var departures = [];
+            {% for belong in belongs %}
+                add_select();
+                stops.push("{{belong.stations.station_name}}");
+                arrivals.push("{{belong.arrival}}");
+                departures.push("{{belong.departure}}");
+            {% endfor %}
+            nOfStops = document.getElementById('nOfStopComboboxes');
+
+            for(var i = 1; i <= parseInt(nOfStops.value); i++){
+                i_str = (i).toString();
+                select = document.getElementById('stop_'+i_str);
+                arrivalTime = document.getElementById('arrival_'+i_str);
+                departureTime = document.getElementById('departure_'+i_str);
+
+                select.value = stops[i - 1];
+                arrivalTime.value = moment(arrivals[i - 1], ["h:mm A"]).format("HH:mm");
+                departureTime.value = moment(departures[i - 1], ["h:mm A"]).format("HH:mm");
+            }
+        }
+
+        function add_fares(){
+            var fare_types = [];
+            var fare_prices = [];
+            {% for fare in fares%}
+                add_fare()
+                fare_types.push("{{ fare.fare_type }}");
+                fare_prices.push("{{ fare.price }}");
+            {% endfor %}
+
+            nOfFares = document.getElementById("nOfFares");
+
+            for(var i = 1; i <= parseInt(nOfFares.value); i++){
+                i_str = (i).toString();
+                fare_type = document.getElementById('fare_input_'+i_str);
+                fare_price = document.getElementById('fare_price_input_'+i_str);
+
+                fare_type.value = fare_types[i - 1];
+                fare_price.value = parseInt(fare_prices[i - 1]);
+            }
+        }
+    </script>
+
+<style>
+
+.table-sortable tbody tr {
+    cursor: move;
+}
+
+
+.table-wrapper {
+    width: 100%;
+    margin: 30px auto;
+    background: #fff;
+    padding: 20px;	
+    box-shadow: 0 1px 1px rgba(0,0,0,.05);
+}
+.table-title {
+    padding-bottom: 10px;
+    margin: 0 0 10px;
+}
+.table-title h2 {
+    margin: 6px 0 0;
+    font-size: 22px;
+}
+.table-title .add-new {
+    float: right;
+    height: 30px;
+    font-weight: bold;
+    font-size: 12px;
+    text-shadow: none;
+    min-width: 100px;
+    border-radius: 50px;
+    line-height: 13px;
+}
+.table-title .add-new i {
+    margin-right: 4px;
+}
+
+
+</style>
+    {% endblock content %}
+
+  </head>
+
+
+  <body>   
+
+    {% block home1 %}
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
+    </li>
+    {% endblock home1 %}
+    {% block dopravce1 %}
+    <li class="nav-item active">
+      <a class="nav-link" href="{% url 'dopravce' %}">Carrier</a>
+    </li>
+    {% endblock dopravce1 %}
+
+
+    {% block dopravce2 %}
+    
+
+     
+              
+        <div class="container my-5" style="width: 100%; text-align: center; margin-top:0%">
+          
+        <h2>Carrier</h2>
+    </div>
+
+    {% endblock dopravce2 %}
+   
+    {% block spoje1 %}
+      
+
+
+    <div class="text-center">
+        <div class="btn-group btn-group-toggle" data-toggle="buttons" >
+            
+            <label class="btn btn-secondary active" >
+              <input type="radio" name="options" id="option1" autocomplete="off" > <a href="{% url 'dopravce' %}" class="text-light" style='text-decoration: none' >Personal Accounts</a>
+            </label>
+            <label class="btn btn-secondary">
+              <input type="radio" name="options" id="option2" autocomplete="off" checked> <a href="{% url 'spoje' %}" class="text-light" style='text-decoration: none' >Connections</a>
+            </label>
+            <label class="btn btn-secondary">
+                <input type="radio" name="options" id="option3" autocomplete="off"> <a href="{% url 'zastavky' %}" class="text-light" style='text-decoration: none' >Stations</a>
+            </label>
+            <label class="btn btn-secondary">
+                <input type="radio" name="options" id="option4" autocomplete="off"> <a href="{% url 'vozidla' %}" class="text-light" style='text-decoration: none' >Vehicles</a>
+              </label>
+          </div>
+    </div>
+
+       
+        {% if create_connection == 0 %}
+        <div class="container my-6" style="padding-bottom: 7%;">
+            <div class="table-wrapper">
+            <div class="table-title">
+                <div class="row">
+                    <div class="col-sm-8"><h2>Create and edit connections</b></h2></div>
+                    <div class="col-sm-4">
+                        <a href="spoje/new_connection">
+                            <button type="button" id="add_row" class="btn btn-info add-new"><i class="fa fa-plus"></i> Add New</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="row clearfix">
+                <div class="col-md-13 table-responsive">
+                    <table class="table table-bordered table-hover table-sortable" id="tab_logic">
+                        <thead>
+                            <tr >
+                                <th class="text-center">
+                                    Connection name
+                                </th>
+                                <th class="text-center">
+                                    Vehicle
+                                </th>
+                                <th class="text-center">
+                                    Stations
+                                </th>
+                                <th class="text-center">
+                                    Arrival
+                                </th>
+                                <th class="text-center">
+                                    Departure
+                                </th>
+                                <th class="text-center">
+                                    Fares
+                                </th>
+                                <th class='text-center'>
+                                    Goes on
+                                </th>
+                                
+                                <th class='text-center'>
+                                    Actions
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for connection in connections %}
+                            <form action="" method="post">
+                            {% csrf_token %}
+                            <tr id='addr0' data-id="0" class="hidden">
+                                <td data-name="name" style="white-space: nowrap;">
+                                    {{connection.connection.id}}
+                                </td>
+                                <td data-name="name" style="white-space: nowrap;">
+                                   {{connection.connection.vehicle}}
+                                </td>
+                                <td data-name="mail" style="white-space: nowrap;">
+                                    {% for station in connection.stations %}
+                                    <div>{{station.stations.station_name}}</div>
+                                    {% endfor %}
+                                </td>
+                                <td data-name="name" style="white-space: nowrap;">
+                                    {% for station in connection.stations %}
+                                    <div>
+                                        {{ station.arrival }}
+                                    </div>
+                                    <span class="result"></span>
+                                    {% endfor %}
+                                
+                                    
+                                </td>
+                                <td data-name="name" style="white-space: nowrap;">
+                                    {% for station in connection.stations %}
+                                    <div>
+                                        {{ station.departure }}
+                                    </div>
+                                    <span class="result"></span>
+                                    {% endfor %}
+                               
+                                </td>
+                                <td data-name="name" style="white-space: nowrap;">
+                                    {% for fare in connection.fares %}
+                                    <div>{{ fare.fare_type }}-{{ fare.price }} Kč </div>
+                                    <span class="result"></span>
+                                    {% endfor %}
+                                </td>
+                                <td data-name="name" style="white-space: nowrap;">
+                                    {% if goes_on|length != 0 %}
+                                    {% for goes_on in connection.goes_on %}
+                                    <div>
+                                        {{goes_on}}
+                                    </div>
+                                    <span class="result"></span>
+                                    {% endfor %}
+                                    {% else %}
+                                    {{ connection.connection.date }}
+                                    {% endif %}
+
+                                </td>
+                                <td >
+                                    <li class="list-inline-item">
+                                        <button type="submit" class="btn btn-warning btn-sm" name="Edit" value="{{connection.connection.id}}">Edit</button>
+                                    </li>
+                                    <li class="list-inline-item">
+                                        <button type="submit" class="btn btn-danger btn-sm" name="Delete" value="{{connection.connection.id}}">Delete</button>
+                                    </li>
+                                </td>
+                            </tr>
+                            </form>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                    </div>
+                    {% elif create_connection == 1%}
+                </div>
+            </div>
+            </div>
+        </div>
+        <div>
+            <div class="row">
+              <div class="col-md-6 mx-auto">
+      
+                {% if errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ errors }}
+                </div>
+                {% endif %}
+      
+                <h2> New Connection </h2>
+                <form action="" method="post" onsubmit = "return check_forms();">
+                  {% csrf_token %}
+                  {{ form | crispy }}
+                  <div>
+                  <h3 style="display:inline-block;"> Stations </h3>  
+                  </div>
+                  <div class="form-group" style="text-align:right;">
+                    <div id="stopsdiv" style="padding-bottom: 10px">
+                        <input type="hidden" id="nOfStopComboboxes" name="nOfStopComboboxes" value="0">
+                    </div >
+                        <input type = "button" onclick = "add_select()" value = "Add Station" class="btn btn-success">
+                        <input type = "button" onclick = "delete_select()" value = "Remove Station" class="btn btn-danger">
+                    </div>
+                    <div>
+                        <h3> Fares </h3>
+                    </div>
+                    <div class="form-group" style="text-align:right;">
+                        <div id="faresdiv" style="padding-bottom: 10px">
+                            <input type="hidden" id="nOfFares" name="nOfFares" value="0">
+                            {% for fare in fares %}
+                                
+                            {% endfor %}
+                        </div>
+                        
+                        <div style="padding-bottom: 10px">
+                            <input type = "button" onclick = "add_fare()" value = "Add Fare" class="btn btn-success">
+                            <input type = "button" onclick = "del_fare()" value = "Remove Fare" class="btn btn-danger">
+                        </div>
+
+                    </div>
+                    <div id="alert-div"></div>
+                    <div style="text-align:center;">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Submit</button>
+                    </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      
+   
+       {% if create_connection == 1 %}
+        <script>
+            add_stops();
+            add_fares();
+        </script>
+       {% endif %}
+    {% endblock spoje1 %}
+
+  </body>
+</html>
+
+
+
+

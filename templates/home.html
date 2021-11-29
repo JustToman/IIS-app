@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+<!doctype html>
+<html lang="cz">
+  <head>
+
+
+    {% block content %}
+    <title>HOME</title>
+    {% endblock content %}
+
+  </head>
+
+
+  <body>
+    {% block content1 %}
+
+
+    
+    {% if search_error %}
+    <div class="alert alert-danger" role="alert">
+      {{ search_error }}
+  </div>
+    {% endif %}
+
+    <div class="jumbotron">
+        <div class="container">
+        <h1 class="display-3">
+          {% if user.is_authenticated %}
+          Welcome {{ user.first_name }} !
+          {% else %}
+          <a href="{% url 'login' %}" style=" color:black; text-decoration: dashed;">Vitajte</a>
+          {% endif %}</h1>
+        <p class="lead">Find your connection</p>
+        <hr class="my-4">
+
+        
+
+
+       
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css" integrity="sha256-DOS9W6NR+NFe1fUhEE0PGKY/fubbUCnOfTje2JMDw3Y=" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js" integrity="sha256-FEqEelWI3WouFOo2VWP/uJfs1y8KJ++FLh2Lbqc8SJk=" crossorigin="anonymous"></script>
+    <!------ Include the above in your HEAD tag ---------->
+    
+    <section class="search-banner text-white py-3 form-arka-plan" id="search-banner">
+        <div class="container my-0">
+            
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card acik-renk-form">
+                        <div class="card-body">
+                            <div class="row">
+                              <div class="col-md-6">
+                                <div class="form-group ">
+                                  <input class="form-control" id="fromInput" type="text" placeholder="From" {% if search_error %} value="{{start}}" {% endif %}">
+                                </div>
+                              </div>
+                              <div class="col-md-6">
+                                <div class="form-group ">
+                                  <input class="form-control" id="toInput" type="text" placeholder="To" {% if search_error %} value="{{stop}}" {% endif %}>
+                                </div>
+                              </div>
+
+                               
+                            </div>
+                            <div class="row">
+                              
+                              
+                            
+                    
+                          </div>
+                            <p class="font-weight-light text-dark"></p>
+                            <div class="row">
+                              
+                              
+                              <div class="col-md-4">
+                                <div class="form-group">
+                      
+                                <input id="timeFill" class="form-control" type="text" {% if search_error %} value="{{datetime}}" {% endif %}>
+                                <script>
+                                  $(function () {
+                                    $("#timeFill").datetimepicker({
+                                      format: 'Y-m-d-H-i',
+                                    });
+                                  });
+                                </script>
+                                <span class="result"></span>
+                                </div>
+                              </div>
+
+                              
+                              
+
+
+                            <div class="col-md-4">
+                              <div class="form-group">
+                                    <button id="searchButton" type="button" class="btn btn-outline-info  pl-5 pr-5 btn-block">Search</button>
+                                    <script type="text/javascript">
+                                      document.getElementById("searchButton").onclick = function () {
+                                        var from_val = document.getElementById('fromInput').value;
+                                        var to_val = document.getElementById('toInput').value;
+                                        var datetimefield_val = document.getElementById('timeFill').value;
+                                        if(from_val == ''){
+                                          from_val = ' ';
+                                        }
+                                        if(to_val == ''){
+                                          to_val = ' ';
+                                        }
+                                        if(datetimefield_val == ''){
+                                          datetimefield_val = ' /';
+                                        }
+                                        location.href = '/connections/'+ from_val + '/' + to_val + '/' + datetimefield_val; 
+                                      };
+                                    </script>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+           
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+    <script>
+    $(document).ready(function(){
+      $("#myInput").on("keyup", function() {
+        var value = $(this).val().toLowerCase();
+        $("#myDIV *").filter(function() {
+          $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+        });
+      });
+    });
+    </script>
+
+        
+        
+        </div>
+   
+    </div>
+    {% endblock content1 %}
+
+    {% block content2 %}
+    <img src="{% static 'images/y2.jpg' %}" class="img-fluid" alt="Responsive image" style="width: 1920px">
+    {% endblock content2 %}
+
+
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+

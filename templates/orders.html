@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load static %}
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+
+
+    {% block content %}
+    <title>ORDERS</title>
+    {% endblock content %}
+
+  </head>
+
+
+  <body>
+
+    {% block home1 %}
+    <li class="nav-item">
+      <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
+    </li>
+    {% endblock home1 %}
+    {% block orders1 %}
+    <li class="nav-item active">
+      <a class="nav-link" href="{% url 'orders' %}">Orders</a>
+    </li>
+    {% endblock orders1 %}
+
+
+    {% block order2 %}
+     <div class="container my-5" style="padding-bottom: 20%;">
+
+    {% if user.is_authenticated %}
+          
+    <div class="container my-5" style="width: 100%; text-align: center; margin-top:0%">
+      
+    <h2>Objednávky</h2>
+
+
+    <div class="container">
+      <div id="myDIV">
+
+     
+      {% for reservation in reservations %}
+      <div class="row">
+       
+          <div class="col-md-4">
+            <div class="card" style="width: 20rem; margin-top: 7%">
+              <img src="{% static 'images/autobus.jpg' %}" class="card-img-top" alt="...">
+              <div class="card-body">
+                <h4 class="card-title">From: {{reservation.reservation.start_station.station_name}}</h4>
+                <h4 class="card-title">To: {{ reservation.reservation.stop_station.station_name }}</h4>
+                <h5 class="card-title">{{ reservation.reservation.connection.operates.first_name }}</h5>
+                <p class="card-text">Date: {{ reservation.reservation.date }} </p>
+                <p class="card-text">Current station: {{ reservation.reservation.connection.located_at.station_name }}</p>
+                <p class="card-text">Number of tickets: {{ reservation.num_of_tickets }}</p>
+                <p class="card-text">Price: {{ reservation.reservation.price }}Kč</p>
+                
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+
+    
+      
+      </div>
+    </div>
+    </div>
+
+      {% endif %}
+      
+    </div>
+     </div>
+
+    {% endblock order2 %}
+  </body>
+</html>
+
+
+
+

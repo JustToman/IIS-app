@@ -1,0 +1,266 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load crispy_forms_filters %}
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+
+
+    {% block content %}
+    <title>CONNECTIONS-DETAILS</title>
+
+    <style>
+
+
+      
+      table.schema, .results.addticketinfo, div.sumrow {
+          width: 66%;
+          margin-left: auto;
+          margin-right: auto;
+      }
+      
+      table {
+          border-collapse: collapse;
+          margin: 0 0 15px 0;
+          font-size: 100%;
+          width: 100%;
+      }
+      
+          </style>
+    {% endblock content %}
+    <script>
+      function tmpAlert(msg, duration){
+        var el = document.createElement("div");
+        //el.setAttribute("style","position:absolute;top:40%;left:50%;background-color:white;");
+        el.className = "alert alert-warning alert-dismissible fade show"
+        el.innerHTML = msg;
+        setTimeout(function(){
+            el.parentNode.removeChild(el);
+        },duration);
+        document.getElementById("alert-div").appendChild(el);
+    }
+    </script>
+  </head>
+
+
+  <body>
+
+    {% block hotel_details1 %}
+
+    {% if errors %}
+    <div class="alert alert-danger" role="alert">
+        {{ errors }}
+    </div>
+    {% endif %}
+    
+    <div class="container my-5" style="width: 100%; text-align: center; margin-top:0%">
+    <h2>Reservation of: {{ connection.id }} </h2>
+    </div>
+    
+   
+    
+    
+
+    <div class="content my-5" style="padding-bottom: 3%;">
+      <div class="container-fluid">
+          <div class="row justify-content-center">
+              <div class="col-md-5">
+                <div class="card">
+                  <img src="{% static 'images/autobus.jpg' %}" class="card-img-top" alt="obrázok...">
+                  <div class="card-body">
+                    <h5 class="card-title"> Carrier: {{ connection.carrier }}  </h5>
+                    <p class="card-text"> Description: {{ connection.vehicle_description }} </p>
+                  </div>
+                  <ul class="list-group list-group-flush" style="text-align: center;">
+                    <li class="list-group-item">From: {{ connection.start }} </li>
+                    <li class="list-group-item">To: {{ connection.stop }} </li>
+                    <li class="list-group-item">Departure: {{ connection.departure }} {{ connection.departure_date }}</li>
+                    <li class="card-text">Arrival: {{ connection.arrival }} {{ connection.departure_date }}</li>
+                    <li class="list-group-item">Current stop: {{ connection.current_station }}</li>
+
+                        <fieldset>
+                        
+                        <!-- Form Name -->
+                        <legend>Fares (5 tickets maximum)</legend>
+                        
+                        <!-- Text input-->
+                        <form action="" method="post">
+                          {% csrf_token %}
+                          {{ form | crispy }}
+                          <li class="list-group-item">Cena: Kč</li>
+                          <div class="content my-5" style="padding-bottom: 3%;">
+                            <div class="container">
+                                <div class="row justify-content-center">
+                                  {% if user.is_authenticated %}
+                                  <div class="col-md-2 pr-0">
+                                    <a>
+                                      <button id="registeredAcceptButton" type="submit" class="btn btn-success" name="submit_reg" value="1">
+                                      Confirm order
+                                      </button>
+                          
+                                      </script>
+                                    </a>
+                                  </div> 
+                                  {% else %}
+                                  <div class="col-md-3 pr-0">
+                                    <a href="">
+                                      <button class="btn btn-success" type="submit" name="submit_no_reg" value="1" >
+                                      Confirm without registration
+                                      </button>
+                                    </a>
+                                  </div> 
+                                  <div class="col-md-3 pr-0">
+                                    <a href="">
+                                      <button type="submit" class="btn btn-success" name="submit_reg" value="1">
+                                      Confirm and register
+                                      </button>
+                                    </a>
+                                  </div> 
+                          
+                          
+                          
+                                  {% endif %}
+                                </div>
+                            </div>
+                          </div>
+                        </form>
+                
+                
+                        
+                        </fieldset>
+               
+                  </ul>
+                  <!-- <div class="card-body">
+                        <a href="#" class="card-link">Card link</a>
+                        <a href="#" class="card-link">Another link</a>
+                      </div> -->
+                </div>
+              </div>  
+          </div>
+      </div>
+    </div>
+
+
+<div class="container my-5" style="padding-bottom: 7%;">
+  <div class="table-wrapper">
+  <div class="table-title">
+      <div class="row">
+          <div class="col-sm-8"><h4>Schedule</h4></div>
+          <div class="col-sm-4">
+              
+          </div>
+      </div>
+  </div>
+  <div class="row clearfix">
+      <div class="col-md-13 table-responsive">
+          <table class="table table-bordered table-hover table-sortable" id="tab_logic">
+              <thead>
+                  <tr >
+                      <th class="text-center">
+                          Connection
+                      </th>
+                      <th class="text-center">
+                          Vehicle
+                      </th>
+                      <th class="text-center">
+                          Stations
+                      </th>
+                      <th class="text-center">
+                          Arrival
+                      </th>
+                      <th class="text-center">
+                          Departure
+                      </th>
+                      <th class="text-center" style="border-top: 1px solid #ffffff; border-right: 1px solid #ffffff;">
+                      </th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr id='addr0' data-id="0" class="hidden">
+                    <th class="text-center"> {{ connection.id }}
+                      
+                  </th>
+                  <th class="text-center">{{ connection.vehicle_type }}</th>
+                  <th class="text-center">
+                    <div class="form-group">
+                     
+                      {% for station in stations %}
+                        <option>{{ station.stations.station_name }}</option>
+                      {% endfor %}
+
+                
+                    </div>
+                      </th>
+                      <th class="text-center">
+                        <div class="form-group">
+                         
+                         {% for station in stations %}
+                            <option>{{ station.arrival }}</option>
+                          {% endfor %}
+    
+                    
+                        </div>
+                          </th>
+                          <th class="text-center">
+                            <div class="form-group">
+                             
+                             
+                            {% for station in stations %}
+                              <option>{{ station.departure }}</option>
+                            {% endfor %}
+                      
+        
+                        
+                            </div>
+                              </th>
+
+                     
+                  </tr>
+              </tbody>
+          </table>
+      </div>
+  </div>
+  </div>
+</div>
+    
+
+    
+
+    
+    
+
+ 
+
+
+    
+
+
+
+   
+
+
+
+
+
+
+    {% endblock hotel_details1 %}
+
+      
+
+      <!--<div class="col-md-8">
+          {% for section in sections %}
+            <p>{{ section.title }}</p>
+            {% for reservation in reservations %}
+              {% if reservation.section == section %}
+                <li>{{ reservation.title }}</li>
+              {% endif %}
+            {% endfor %}
+          {% endfor %}
+        </div>-->
+
+
+  </body>
+</html>

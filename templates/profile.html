@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% load static %}
+{% load crispy_forms_tags %}
+{% load crispy_forms_filters %}
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+
+
+    {% block content %}
+    <title>PROFILE</title>
+    {% endblock content %}
+
+  </head>
+
+
+  <body>
+
+    {% block profile1 %}
+
+
+
+
+<div class="content my-5" style="padding-bottom: 3%;">
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <h4 class="card-title">Edit Account</h4>
+                    </div>
+                    <div class="card-body">
+                        <form action="{% url 'profile' %}" method="post">
+                            {% csrf_token %}
+                            {{ form | crispy }}
+                            
+                            
+                            <button type="submit" class="btn btn-info btn-fill pull-right">Update Profile</button>
+                            <div class="clearfix"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    {% endblock profile1 %}
+
+
+
+
+  </body>
+</html>

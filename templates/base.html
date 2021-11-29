@@ -1,0 +1,320 @@
+{% load static %}
+
+<!doctype html>
+<html lang="en" dir="ltr">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="description" content="avZ" />
+    <meta nema="robots" content="index,follow">
+    <link rel="icon" href="{% static 'images/Direction.ico' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+
+
+    
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+
+    {% block content %}
+    <title>HOMEPAGE</title>
+    {% endblock content %}
+  </head>
+
+
+
+
+
+  <div>
+
+
+    
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="container">
+        <a class="navbar-brand" href="{% url 'home' %}"><img src="{% static 'images/Direction.ico' %}" width="30" height="30" class="d-inline-block align-top" alt="" loading="lazy">FIT-HELPER</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav mr-auto">
+            {% block home1 %}
+            <li class="nav-item active">
+              <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
+            </li>
+            {% endblock home1 %}
+            {% block hotel1 %}
+            {% endblock hotel1 %}
+            {% if user.user_type == 1 or user.user_type == 4 %}
+            {% block orders1 %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'orders' %}">Orders</a>
+            </li>
+            {% endblock orders1 %}
+            {% endif %}
+            {% if user.user_type == 1 or user.user_type == 2%}
+            {% block dopravce1 %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'dopravce' %}">Carrier</a>
+            </li>
+            {% endblock dopravce1 %}
+            {% endif %}
+            {% if user.user_type == 1 or user.user_type == 3%}
+            {% block personal1 %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'personal' %}">Personal</a>
+            </li>
+            {% endblock personal1 %}
+            {% endif %}
+            {% if user.user_type == 1 %}
+            <li class="nav-item">
+              <a class="nav-link" href="{% url 'users' %}">Users</a>
+            </li>
+            {% endif %}
+        
+            
+          </ul>
+
+
+
+          <ul class="navbar-nav">
+
+            {% if user.is_authenticated %}
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                {{ user.username }}
+              </a>
+              <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                {% ifequal user.groups.all.0.name "admin" %}
+                <a class="dropdown-item" href="{% url 'users' %}">Users</a>
+                {% endifequal %}
+                <a class="dropdown-item" href="{% url 'profile' %}">Account</a>
+                <div class="dropdown-divider"></div>
+                <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+              </div>
+            </li>
+            {% endif %}
+
+
+            <li class="nav-item active" style="margin-right: 2px;">
+
+              {% if user.is_authenticated %}
+              {% ifequal user.groups.all.0.name "admin" %}
+              <a href="{% url 'signup' %}">
+                <button type="button" class="btn btn-outline-info">
+                  Registration
+                </button>
+              </a>
+            {% endifequal %}
+              {% else %}
+              
+              <a href="{% url 'login' %}">
+                <button type="button" class="btn btn-outline-info">
+                  Login
+                </button>
+              </a>
+           
+            </li>
+         
+            <a href="{% url 'signup' %}">
+              <button type="button" class="btn btn-outline-info">
+                Registration
+              </button>
+            </a>
+         
+            {% endif %}
+          </ul>
+
+
+
+        </div>
+        </div>
+      </nav>
+
+
+
+      <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
+      <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+      <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css" integrity="sha256-DOS9W6NR+NFe1fUhEE0PGKY/fubbUCnOfTje2JMDw3Y=" crossorigin="anonymous" />
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js" integrity="sha256-FEqEelWI3WouFOo2VWP/uJfs1y8KJ++FLh2Lbqc8SJk=" crossorigin="anonymous"></script>
+      
+    
+    
+      
+
+
+      {% block content1 %}
+      {% endblock content1 %}
+
+      {% block content2 %}
+      {% endblock content2 %}
+
+      {% block hotel4 %}
+      {% endblock hotel4 %}
+
+      {% block hotel3 %}
+      {% endblock hotel3 %}
+     
+ 
+      {% block hotel2 %}
+      {% endblock hotel2 %}
+
+
+      {% block hotel_details1 %}
+      {% endblock hotel_details1 %}
+
+
+      {% block reg_view %}
+      {% endblock reg_view %}
+      
+      {% block signup1 %}
+      {% endblock signup1 %}
+
+
+      {% block login1 %}
+      {% endblock login1 %}
+
+
+      {% block order2 %}
+      {% endblock order2 %}
+
+
+      {% block profile1 %}
+      {% endblock profile1 %}
+
+
+      {% block users1 %}
+      {% endblock users1 %}
+
+      {% block confirm1 %}
+      {% endblock confirm1 %}
+
+      {% block payment1 %}
+      {% endblock payment1 %}
+
+      {% block dopravce2 %}
+      {% endblock dopravce2 %}
+
+      {% block dopravce3 %}
+      {% endblock dopravce3 %}
+
+      {% block spoje1 %}
+      {% endblock spoje1 %}
+
+      {% block zastavky1 %}
+      {% endblock zastavky1 %}
+
+      {% block vozidla1 %}
+      {% endblock vozidla1 %}
+
+      {% block personal2 %}
+      {% endblock personal2 %}
+
+      {% block personal3 %}
+      {% endblock personal3 %}
+
+      {% block users2 %}
+      {% endblock users2 %}
+      
+
+      
+
+      
+
+      <!-- Footer -->
+      <footer class="page-footer font-small unique-color-dark">
+
+        
+      
+        <!-- Footer Links -->
+
+        <div class="container text-center text-md-left mt-5">
+      
+          <!-- Grid row -->
+          <div class="row mt-3">
+      
+            <!-- Grid column -->
+            <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
+      
+              <!-- Content -->
+              <h6 class="text-uppercase font-weight-bold">FIT-HELPER</h6>
+              <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
+              <p>Thanks for visiting our webpage </p>
+      
+            </div>
+            <!-- Grid column -->
+      
+            <!-- Grid column -->
+            <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mb-4">
+      
+              <!-- Links -->
+              <h6 class="text-uppercase font-weight-bold">Menu</h6>
+              <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
+              <p>
+                <a href="{% url 'home' %}" class="text-secondary">Home</a>
+              </p>
+              {% if user.user_type == 1 or user.user_type == 4 %}
+              <p>
+                <a href="{% url 'orders' %}" class="text-secondary">Orders</a>
+              </p>
+              {% endif %}
+              {% if user.user_type == 1 or user.user_type == 2 %}
+              <p>
+                <a href="{% url 'dopravce' %}" class="text-secondary">Carrier</a>
+              </p>
+              {% endif %}
+              {% if user.user_type == 1 or user.user_type == 3 %}
+              <p>
+                <a href="{% url 'personal' %}" class="text-secondary">Personal</a>
+              </p>
+              {% endif %}
+
+      
+            </div>
+            <!-- Grid column -->
+      
+            <!-- Grid column -->
+            <!-- Grid column -->
+      
+            <!-- Grid column -->
+            <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
+      
+              <!-- Links -->
+              <h6 class="text-uppercase font-weight-bold">Contact</h6>
+              <hr class="deep-purple accent-2 mb-4 mt-0 d-inline-block mx-auto" style="width: 60px;">
+              <p>
+                <img src="{% static 'images/Home-footer.ico' %}" width="20" height="20"><i class="fas fa-home mr-1"></i> ČR, 612 00 Brno</p>
+              <p>
+                <img src="{% static 'images/email-footer.ico' %}" width="20" height="20"><i class="fas fa-envelope mr-1"></i> xpopel24@vutbr.cz</p>
+              <p>
+                <img src="{% static 'images/email-footer.ico' %}" width="20" height="20"><i class="fas fa-phone mr-1"></i> xkudli09@vutbr.cz</p>
+              <p>
+                <img src="{% static 'images/email-footer.ico' %}" width="20" height="20"><i class="fas fa-print mr-1"></i> xbenko10@vutbr.cz</p>
+      
+            </div>
+            <!-- Grid column -->
+      
+          </div>
+          <!-- Grid row -->
+      
+        </div>
+        <!-- Footer Links -->
+      
+        <!-- Copyright -->
+        <div style="background-color: #dcdddd;">
+        <div class="footer-copyright text-center py-3">© 2021 avZ:
+          <a href="https://www.fit.vut.cz/.cs" class="text-secondary"> FIT.VUT.cz</a>
+        </div>
+        <!-- Copyright -->
+      </div>
+      </footer>
+      <!-- Footer -->
+    </div>
+
+  </body>
+</html> 
