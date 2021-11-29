@@ -26,7 +26,6 @@ flake8==3.9.2
 git-review==1.28.0
 gitdb==4.0.1
 GitPython==3.0.9
-gpg==1.13.1
 html5lib==0.999999999
 idna==2.5
 importlib-metadata==4.6.1
