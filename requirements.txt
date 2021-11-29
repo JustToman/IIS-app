@@ -83,7 +83,6 @@ python-augeas==0.5.0
 python-cinderclient==8.0.0
 python-dateutil==2.6.1
 python-keystoneclient==4.2.0
-python-linux-procfs==0.6.3
 python-novaclient==17.5.0
 python-openstackclient==5.5.0
 python-qpid-proton==0.35.0
