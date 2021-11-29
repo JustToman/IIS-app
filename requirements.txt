@@ -55,7 +55,6 @@ oslo.utils==4.9.2
 packaging==21.0
 paramiko==2.4.3
 pbr==5.6.0
-pciutils==2.3.6
 pep8==1.7.1
 perf==0.1
 pexpect==4.3.1
